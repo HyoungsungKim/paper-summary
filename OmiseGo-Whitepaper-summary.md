@@ -75,9 +75,9 @@ eWallet fiat tokens may also cross using other eWallet tokens. By  allowing  for
 >
 > 
 >
-> Combine eWallet and exchange for market liquidity
+> (Combine eWallet and exchange for market liquidity)
 >
-> &&  It need high liquidity and prefer high-volume && micorpayments 
+> &&  (It need high liquidity and prefer high-volume && micorpayments) 
 
  There is an expectation, that eWallets will hold some reserve of fiat tokens of other eWallets, ready to be used for smaller transfers in popular directions. ***Constructions  such  as  Lightning  Network  allow  for payments  to  occur off-chain  when eWallets hold balances to facilitate rapid payments.***  Implementations allow for payments across Bitcoin and Ethereum, which can be easily ported to the OMG chain for eWallet balances
 
