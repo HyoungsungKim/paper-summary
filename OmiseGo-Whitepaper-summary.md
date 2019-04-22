@@ -26,9 +26,8 @@ OmiseGO is building a decentralized exchange, liquidity provider mechanism, clea
 > - Transfer : A token can be sent 
 > - Balance Of : Return token balance of account
 > - Transfer From : Token can be transfered
-> - Approve : Prevent fake token -> check total amount of token and reject or conclude contransaction 
+> - Approve : Prevent fake token -> check total amount of token and reject or conclude contraction
 > - Allowance : If someone try to send a tokens which are more than their balance, then transaction is canceled or not allowed
-
 
 
 ## 1. Introduction adn Problem Statement ##
@@ -57,7 +56,7 @@ However, direct crosses between eWallet fiat tokens may not be desirable, as the
 >
 > Market Liquidity : It is shown how much assets can be converted into cash
 
- there’s strong incentive to use decentralized tokens for settlement due to coordination/trust advantages related to programmatic adjudication. 
+ there’s strong incentive to use decentralized tokens for settlement due to coordination/trust advantages related to programmatic adjudication.
 
 > what is a proof of this sentence?
 
@@ -81,7 +80,7 @@ eWallet fiat tokens may also cross using other eWallet tokens. By  allowing  for
 
  There is an expectation, that eWallets will hold some reserve of fiat tokens of other eWallets, ready to be used for smaller transfers in popular directions. ***Constructions  such  as  Lightning  Network  allow  for payments  to  occur off-chain  when eWallets hold balances to facilitate rapid payments.***  Implementations allow for payments across Bitcoin and Ethereum, which can be easily ported to the OMG chain for eWallet balances
 
-> Constructions  such  as  Lightning  Network  allow  for payments  to  occur off-chain  when eWallets hold balances to facilitate rapid payments 
+> Constructions  such  as  Lightning  Network  allow  for payments  to  occur off-chain  when eWallets hold balances to facilitate rapid payments
 >
 > Is it possible?
 
