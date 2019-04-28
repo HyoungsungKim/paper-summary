@@ -14,7 +14,7 @@ In this work we have taken a step towards bringing the ability to reconstruct an
 
 > [Signed distance function](https://en.wikipedia.org/wiki/Signed_distance_function)
 >
-> -> when passed the coordinates of a point in space, return the shortest distance between that point and some surface.
+> -> when passed the coordinates of a point in space, ***return the shortest distance between that point and some surface.***
 
 - Accurate and robust tracking of the camera pose by aligning all depth points with the complete scene model
 
