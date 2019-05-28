@@ -8,6 +8,8 @@
 
 [cosmos whitepaper](https://cosmos.network/cosmos-whitepaper.pdf)
 
+[tokamak network - onther](http://tokamak.network/)
+
 
 
 ## Something to read(articles, posts)
