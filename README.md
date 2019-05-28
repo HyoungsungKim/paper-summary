@@ -2,6 +2,12 @@
 
 ## Something to read
 
+- [Bitcoin](###bitcoin)
+- [Ethereum](###ethereum)
+- [Stackexchange questions](###stack-exchange-questions)
+
+
+
 ### Bitcoin
 
 [Understanding Segwit Block Size](https://medium.com/@jimmysong/understanding-segwit-block-size-fd901b87c9d4)
