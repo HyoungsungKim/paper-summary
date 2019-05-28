@@ -1,12 +1,21 @@
 # Let's read papers and articles together :)
 
-## Something to read
+## Something to read(papers)
+
+[Secure High-Rate Transaction Processing in Bitcoin](https://fc15.ifca.ai/preproceedings/paper_30.pdf)
+
+[Plasma:  Scalable Autonomous Smart Contracts](https://plasma.io/plasma.pdf)
+
+[cosmos whitepaper](https://cosmos.network/cosmos-whitepaper.pdf)
+
+
+
+## Something to read(articles, posts)
 
 - [Bitcoin](###bitcoin)
 - [Ethereum](###ethereum)
 - [Stackexchange questions](###stack-exchange-questions)
-
-
+- [Etc](###etc)
 
 ### Bitcoin
 
@@ -44,3 +53,12 @@
 
 [What is a relationship with total hash rate(hash power) and average block generation time?](https://bitcoin.stackexchange.com/questions/87971/what-is-a-relationship-with-total-hash-ratehash-power-and-average-block-genera)
 
+### Etc
+
+##### Cosmos & Polkadot
+
+[5 Differences between Cosmos & Polkadot](https://medium.com/@juliankoh/5-differences-between-cosmos-polkadot-67f09535594b)
+
+[twitter](https://twitter.com/web3jp/status/1113440485698179072?s=19)
+
+[Cosmos vs. Polkadot Comparison - reddit](https://www.reddit.com/r/dot/comments/b8tw3g/cosmos_vs_polkadot_comparison/?utm_source=share&utm_medium=ios_app)
