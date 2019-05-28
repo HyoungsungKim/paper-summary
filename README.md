@@ -32,3 +32,9 @@
 
 [Sharding, Casper → Serenity!](https://medium.com/onther-tech/sharding-casper-serenity-e25dec162845)
 
+### Stack exchange questions
+
+[Concept of Block weight and segwit are still unclear](https://bitcoin.stackexchange.com/questions/87970/concept-of-block-weight-and-segwit-are-still-unclear)
+
+[What is a relationship with total hash rate(hash power) and average block generation time?](https://bitcoin.stackexchange.com/questions/87971/what-is-a-relationship-with-total-hash-ratehash-power-and-average-block-genera)
+
