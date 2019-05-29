@@ -14,10 +14,10 @@
 
 ## Something to read(articles, posts)
 
-- [Bitcoin](###bitcoin)
-- [Ethereum](###ethereum)
-- [Stackexchange questions](###stack-exchange-questions)
-- [Etc](###etc)
+- [Bitcoin](#bitcoin)
+- [Ethereum](#ethereum)
+- [Stackexchange questions](#stack-exchange-questions)
+- [Etc](#etc)
 
 ### Bitcoin
 
