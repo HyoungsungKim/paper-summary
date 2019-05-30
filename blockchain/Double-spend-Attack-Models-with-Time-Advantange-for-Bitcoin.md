@@ -4,6 +4,14 @@
 
 Bitcoin is based on the concept of ‘proof of work’ allowing users to execute payments by digitally signing their transactions. ***This paper is about attack models that can assign possible time advantage to attacker agents in the Bitcoin network.***
 
+> Difference of Nakamoto's and Rosenfeld's
+>
+> Nakamoto : honest chain's m block generation time is determined (m * $t_h$)  $t_h$ : block generation time / 1 block
+>
+> Rosenfeld : considered honest chain's generation time as variable
+>
+> lambda of poisson : the number of event in time t
+
 In particular, this paper presents:
 
 1. two attack models in which partial advancement towards ***block production can be influenced by time*** and not only by the hashpower used to produce blocks of hashes
@@ -146,7 +154,7 @@ denoting ***the probability of an attacker’s branch ever becoming longer than 
 #### 5.2.3 Double-spend attack probability
 
 $$
-D_{ST}(q,K, n, t)
+DS_{T}(q,K, n, t)
 $$
 
 denoting, similar to DS in the generalized model, the probability of an attacker successfully performing a double-spend attack given an initial advantage of n blocks and `tτ` seconds over the honest nodes.
