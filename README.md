@@ -43,6 +43,18 @@
 
 [How does Ethereum work, anyway?](https://medium.com/@preethikasireddy/how-does-ethereum-work-anyway-22d1df506369)
 
+> merkle tree : save data using hash
+>
+> patricia  : searching algorithim using trie
+>
+> merkle patricia algorithm : save using hash(merkle) and searching value using patricia
+>
+> ## ***Concept of gas : gas is unit not price***
+>
+> ***That is why gasLimit is multiplied with gasPrice***
+>
+> transaction fee = gasLimit * gasPrice ($gas * ether/gas = ether$)
+
 [How secure is Ethereum 2.0 consensus? Or, what is Casper finality?](https://medium.com/@ralexstokes/how-secure-is-ethereum-2-0-consensus-41523a59f270)
 
 [The finality gadget Putting eth2.0 to work…](https://medium.com/@ralexstokes/the-finality-gadget-2bf608529e50)
