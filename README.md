@@ -41,6 +41,8 @@
 
 ### Ethereum
 
+[How does Ethereum work, anyway?](https://medium.com/@preethikasireddy/how-does-ethereum-work-anyway-22d1df506369)
+
 [How secure is Ethereum 2.0 consensus? Or, what is Casper finality?](https://medium.com/@ralexstokes/how-secure-is-ethereum-2-0-consensus-41523a59f270)
 
 [The finality gadget Putting eth2.0 to work…](https://medium.com/@ralexstokes/the-finality-gadget-2bf608529e50)
