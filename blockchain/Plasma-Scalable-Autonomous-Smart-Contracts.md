@@ -25,6 +25,10 @@ The greatest complexity around global enforcement of non-global data revolves ar
 
 ## 1 Scalable Multi-party Computation
 
+***With blockchains, the solution for enforcing correctness has generally been having every participant validate the chain themselves. To accept a new block requires one to fully validate the block to ensure correctness.*** Many efforts to scale blockchain transactional capacity (e.g. Lightning Network) requires using time commitments to build a fidelity bond, (an assert/challenge agreement) so that the asserted data must be subject to a dispute period for participants on the blockchain to enforce the state. This assert/challenge construction allows one to assert a particular state is correct, and if the value is incorrect, then a dispute period exists where another observer can provide a proof challenging that assertion before a certain agreed time. In the event of fraudulent or faulty behavior, the blockchain can then penalize the faulty actor. This creates a mechanism for participants to be encouraged to enforce if-and-only-if the incorrect state is asserted. By having this assert/challenge-proof construction, interested participants can be able to assert ground truths to non-interested participants on the root blockchain 
+
+> fidelity : 충실도
+>
 > enforcing : 강화
 >
 > correctness : 정확성
@@ -39,7 +43,9 @@ This form of commitment to multiparty off-chain state (”state channels”) req
 
 ***Instead, we seek to design a system whereby computation can occur off-blockchain butultimately enforcible on-chain which is scalable to billions of computations per second with minimal on-chain updates.***
 
-These state updates occur across an autonomous set of proof-of-stake validators who are incentivized towards correct behavior enforced by fraud proofs, which allow for computation to occur without a single actor being able to easily halt the computation service. This needs to be able to minimize issues around the data availability problem (i.e. block withholding), minimizing the state updates in the root blockchain necessary in the event of byzantine actors to prevent risk-discounted transaction fees on the root chain, and a mechanism to enforce state changes. Similar to the Lightning Network, ***Plasma is a series of contracts which runs on top of an existing blockchain to ensure enforcement while ensuring that one is able to hold funds in a contract state with net settlement/withdrawal at a later date.***
+These state updates occur across an autonomous set of proof-of-stake validators who are incentivized towards correct behavior enforced by fraud proofs, which allow for computation to occur without a single actor being able to easily halt the computation service.
+
+This needs to be able to minimize issues around the data availability problem (i.e. block withholding), minimizing the state updates in the root blockchain necessary in the event of byzantine actors to prevent risk-discounted transaction fees on the root chain, and a mechanism to enforce state changes. Similar to the Lightning Network, ***Plasma is a series of contracts which runs on top of an existing blockchain to ensure enforcement while ensuring that one is able to hold funds in a contract state with net settlement/withdrawal at a later date.***
 
 ## 2 Plasma
 
@@ -84,3 +90,5 @@ Incredibly high amount of transactions can be committed on this Plasma chain wit
 We construct a series of fraud proofs as smart contracts on the root blockchain which enforce state in this channel so that attempts at fraud or non-Byzantine behavior can be slashed.
 
 We construct an interactive game whereby the exiting party attests to a bitmap of participants’ ledger outputs arranged in an UTXO model which requests a withdrawal.
+
+> attests : 증명하다
