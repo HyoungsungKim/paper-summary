@@ -87,8 +87,23 @@ For funds held in the Plasma chain, this allows for deposit and withdrawal of fu
 
 Incredibly high amount of transactions can be committed on this Plasma chain with minimal data hitting the root blockchain. Any participant can transfer funds to anyone, including transfers to participants not in the existing set of participants. These transfers can pay into and withdraw (with some time delay and proofs) funds in the root blockchain’s native coin(s)/token(s).
 
-We construct a series of fraud proofs as smart contracts on the root blockchain which enforce state in this channel so that attempts at fraud or non-Byzantine behavior can be slashed.
+We construct a series of fraud proofs as smart contracts on the root blockchain which enforce state in this channel so that attempts at fraud or non-Byzantine behavior can be slashed. These fraud proofs enforce an interactive protocol of fund withdrawals. Similar to the Lightning Network, when withdrawing funds, ***the withdrawal requires time to exit.***
 
 We construct an interactive game whereby the exiting party attests to a bitmap of participants’ ledger outputs arranged in an UTXO model which requests a withdrawal.
 
 > attests : 증명하다
+
+Anyone on the network can submit an alternate *bonded* proof which attests whether any funds have already been spent. In the event this is incorrect, anyone on the network can attest to fraudulent behavior and slash the bonds to roll back the attestation.
+
+Plasma allows for an interactive mechanism between n participants. The primary difference between Lightning and Plasma is that
+
+- not all participants need to be online to update state
+- the participants do not need a record of entry on the root blockchain to enable their participation – one can place funds on Plasma without direct interaction on-chain, with minimal data to confirm transactions when constructing these Plasma chains in a tree format.
+
+## 2.2 Enforcible Blockchains in Blockchains
+
+> Plasma composes blockchains in a tree. Block commitments flow down and exits can be submitted to any parent chain, ultimately being committed to the root blockchain.
+
+If Lightning Network uses an adjudication layer for payments which is ultimately enforcible on the root blockchain, we create a system of higher and lower courts to maximize availability and minimize costs in non-Byzantine states. 
+
+> adjudication : 판결
