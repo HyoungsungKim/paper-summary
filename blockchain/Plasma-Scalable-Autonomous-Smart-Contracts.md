@@ -100,10 +100,26 @@ Plasma allows for an interactive mechanism between n participants. The primary d
 - not all participants need to be online to update state
 - the participants do not need a record of entry on the root blockchain to enable their participation – one can place funds on Plasma without direct interaction on-chain, with minimal data to confirm transactions when constructing these Plasma chains in a tree format.
 
-## 2.2 Enforcible Blockchains in Blockchains
+### 2.2 Enforcible Blockchains in Blockchains
 
 > Plasma composes blockchains in a tree. Block commitments flow down and exits can be submitted to any parent chain, ultimately being committed to the root blockchain.
 
 If Lightning Network uses an adjudication layer for payments which is ultimately enforcible on the root blockchain, we create a system of higher and lower courts to maximize availability and minimize costs in non-Byzantine states. 
 
 > adjudication : 판결
+
+we are able to create state transitions which are only periodically committed to parent chains (which then flows to the root blockchain).
+
+This child blockchain runs on top of a root blockchain (e.g. Ethereum) and from the root blockchain's perspective, is only seeing periodic commitments with the tokens bonded in the contract for enforcement of the Proof-of-Stake consensus rules and business logic of the blockchain.
+
+This has significant advantages in maximizing block availability and minimizing stake for validation of one's coins. However, since not all data is being propagated to all parties (only those who wish to validate a particular state), parties are responsible for monitoring the particular chain they are interested in periodically to penalize fraud, as well as personally exiting the chain rapidly in the event of block withholding attacks.
+
+### 2.3 Plama Proof-of-Stake
+
+We propose a method whereby a single party can enforce state with a set of validators, often in a proof-of-stake framework requiring either ETH bonding, or bonding in a token (e.g. ERC-20). The consensus mechanism for this proof of stake system, is again, enforced in an on-blockchain smart contract.
+
+Proof-of-stake coalitions face this issue since it's possible if one does straight leader election, block withholding attacks by majority cartels (also generalized as the ”data availability problem”) become magnified.
+
+> mitigate : 완화시키다.
+
+We can mitigate this in Plasma Proof-of-Stake by allowing stakeholders to publish on  the root blockchain or parent Plasma chain which contains a committed hash of their new block.
