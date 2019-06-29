@@ -114,12 +114,101 @@ This child blockchain runs on top of a root blockchain (e.g. Ethereum) and from 
 
 This has significant advantages in maximizing block availability and minimizing stake for validation of one's coins. However, since not all data is being propagated to all parties (only those who wish to validate a particular state), parties are responsible for monitoring the particular chain they are interested in periodically to penalize fraud, as well as personally exiting the chain rapidly in the event of block withholding attacks.
 
-### 2.3 Plama Proof-of-Stake
+### 2.3 Plasma Proof-of-Stake
 
 We propose a method whereby a single party can enforce state with a set of validators, often in a proof-of-stake framework requiring either ETH bonding, or bonding in a token (e.g. ERC-20). The consensus mechanism for this proof of stake system, is again, enforced in an on-blockchain smart contract.
 
 Proof-of-stake coalitions face this issue since it's possible if one does straight leader election, block withholding attacks by majority cartels (also generalized as the ”data availability problem”) become magnified.
 
+> coalitions : 연합, 제휴
+>
 > mitigate : 완화시키다.
+>
+> suboptimal : 차선의, 최적이 아닌
 
-We can mitigate this in Plasma Proof-of-Stake by allowing stakeholders to publish on  the root blockchain or parent Plasma chain which contains a committed hash of their new block.
+We can mitigate this in Plasma Proof-of-Stake by allowing stakeholders to publish on  the root blockchain or parent Plasma chain which contains a committed hash of their new block. ***Validators only build upon blocks which they have fully validated. They can build upon blocks in parallel (to encourage maximum information sharing).***
+
+We create incentives for validators to represent the past 100 blocks to match the current staker ratio (i.e. if one stakes 3 percent of the coins, they should be 3 percent of the past 100 blocks), by rewarding more transaction fees to be paid out to accurate representation.
+
+Excess fees (due to suboptimal behavior by stakers) goes to a pool to pay out fees in the future. A commitment exists in every block which includes data from the past 100 blocks (with a nonce). The correct chain tip is the chain with summed weight of the highest fees. After a period of time, the blocks are finalized.
+
+### 2.4  Blockchains as MapReduce
+
+By constructing computation in a MapReduce format, ***it is also easy to design computation and state transitions in a hierarchical tree.***
+
+***MapReduce gives a framework for high scale computation across thousands of nodes.*** The blockchain faces similar issues in meeting computational scale, but has additional requirements in generating proofs of computation.
+
+Our construction enables incredible high-scale computation, with time or speed trade-offs. ***These trade-offs produce a network where nodes assert computation and participants are responsible for verifying them.***
+
+It enables the ability to compress computation into bonded proofs. These bonded proofs encourage participants to only attest to things honestly. If no one is watching/enforcing the computation, it's presumed to be correct, or it simply doesn't matter what the result may be.
+
+Computation can be watched by any participant in open networks, but participants who hold balances and/or require correct computation will periodically watch the chain to ensure correctness.
+
+The scaling benefit comes from removing the requirement to watch the chains one is not economically impacted by, one should watch the chains where one wishes to enforce correct behavior.
+
+> One only needs to watch the data which one wants to enforce.
+
+### 2.5 A Description of Economic Incentives around Persistent decentralized Autonomous Blockchains
+
+We propose a structure whereby one can create economic incentives to persistently keep a child blockchain running.
+
+To incentivize avoidance of Byzantine states, especially around correctness and liveness, it may be ideal to create a token per contract. This token represents the network effects in operating the contract, and creates an incentive to maximize security of this contract.
+
+***As the Plasma chain requires the token to secure the network in a Proof-of-Stake structure,*** stakers are disincentivized against Byzantine behaviors or faults as that would cause a loss in value of the token.
+
+> PoS는 무엇에 대한 지분으로 진행?? 토큰 보유량으로 PoS? -> 이더리움으로...
+>
+> bond : 채권
+
+With simple contracts and business logic such as a basic contract account holding funds on behalf of its users, ***an Ethereum bond can represent a stake in the Plasma chain.***
+
+The stakes who put up bonds (whether it be a token or ETH) have incentives to continue operating the network as they receive transaction fees for operating the network.
+
+## 3 Design Stack and Smart Contract
+
+***Plasma is not designed to reach assured finality rapidly, even though transactions are confirmed in the child chains rapidly, it requires it to be finalized on the underlying root blockchain.*** Channels are necessary to be able to have rapid local finality of payments and contracts (enforcible on-chain).
+
+***In smart contracts, there is an issue of the ”free option problem” whereby the receiver (second or last signer) of a smart contract offer is needed to sign and broadcast the contract in order to enforce it*** – during that time the receiver of the contract may treat it as a free option and refuse to sign the contract if the activity does not interest them. This is exacerbated as smart contracts are most effective when dealing with counterparties who are untrusted (as that creates minimization in counterparty risk and thereby information costs).
+
+With Lightning (including Lightning on top of Plasma), it's possible to do incredibly rapid updates with reasonable sense of localized finality. ***Instead of having a single payment which gives optionality to the last party, a payment can instead be split into many small payments.***
+
+This minimizes the free option to the amount per split fraction. Since the second party of the smart contract only has the free option on the amount in the split fraction, the value of the free option is minimized. Within the above use cases, it's possible that ***Lightning may be a primary interface layer for rapid financial payments/contracts on top of Plasma, as Plasma allows for ledger updates with minimal root chain state commitments.***
+
+### 3.1 The Most Significant Problem in Sharding is Information
+
+With sharded data sets, there is a significant risk of individual shards to refuse to disclose information. It would thereby be impossible to produce fraud proofs. We attempt to resolve this using 3 strategies:
+
+- A new Proof-of-Stake mechanism which encourages block propagation. The underlying mechanism does not entirely rely upon correct functionality of incentives. However, this should significantly decrease faulty behavior.
+- Significant withdrawal delays which allow for accurate withdrawal proofs. In the event of block withholding, plasma chains can immediately lock up funds via a proof, preventing an attacker from submitting fraudulent withdrawal proofs.
+- Creating child chains whereby transactions can be propagated in any parent chain. ***For this reason, participants on networks will desire to submit transactions to deep child chains.*** People are therefore encouraged to create deeply nested child chains which represent significant value. ***Note that there is some presumption about reputation around chain selection for individuals holding very small balances which cannot be on the root blockchain transaction fees, however is mitigated by having deeply nested chains. This security model is the key novelty of plasma chains.***
+
+## 4 Related Work
+
+Plasma uses a merkleized proof to enforce child chains.
+
+### 4.1 TrueBit
+
+Plasma shares a great degree of similarity in the reliance of fraud proofs as TrueBit. Similar assumptions as TrueBit applies, namely that computational state must be computable and broadcastable online, data availability problems needs to be mitigated, failure must be disclosed. We attempt to mitigate these problems, especially the latter two.
+
+The primary aspect which Plasma attempts to build upon TrueBit is the notion of multiparty participants which need to compute on shared state.
+
+### 4.2 Blockchain Sharding
+
+If the root blockchain is sharded, then the Plasma chain can run on top of this for greater scalability and other benefits. This can also be a testbed for different sharding techniques as there are no consensus changes necessary in Ethereum and other rich stateful blockchains to begin basic operation.
+
+### 4.4 Merge-Mined Blockchain
+
+Examples include Namecoin, which create concurrent blocks with the parent blockchain. This presumes full validation of the blockchain, thus does not provide scalability benefits.
+
+The goal of Plasma is to ensure that only users and miners need to validate the chains relevant to themselves.
+
+### 4.7 Cosmos/Tendermint
+
+Cosmos arranges blockchains in a Cosmos ”Hub” and has child blockchains ”Zones” validated over a proof of stake system. ***Significant similarity with the construction of child blockchains exist, however Plasma is reliant upon construction fraud proofs to enforce state in child chains and is genericized to be applicable to many chains.*** The proof of stake construction for Cosmos presumes a 2/3 honest majority of validators, including validators of its Cosmos Zone.
+
+### 4.8 Polkadot
+
+Polkadot also constructs a structure for a hierarchy of blockchains. There is some similarity with the design of Polkadot. Instead of a structure with ”fishermen” validators ensuring block accuracy, we construct a series of child blockchains which enforce state via merkle proofs. The Polkadot construction is reliant on the child blockchains (”parachains”) state and information availability being enforced by the fishermen.
+
+## 5 Multiparty Off-chain State
+
