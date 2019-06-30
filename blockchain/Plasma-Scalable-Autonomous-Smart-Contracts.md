@@ -212,3 +212,78 @@ Polkadot also constructs a structure for a hierarchy of blockchains. There is so
 
 ## 5 Multiparty Off-chain State
 
+The goal is to construct a method whereby participants can hold funds in the native underlying coin/token of the blockchain, without significant on-chain state. Plasma begins to blur the line between on-chain and off-chain (e.g. are shards on-chain or off-chain?).
+
+There are two common issues in efforts to establish off-blockchain multiparty channels.
+
+- The first is the need to do synchronized state update amongst all participants when there needs to be an update on the system (or otherwise make trade-offs on availability of global state updates) ***and therefore must be online.***
+- The second is that adding and removing participants in the channel require a large on-blockchain update, enumerating all participants which are added and removed.
+
+The general construction is a child blockchain which allows for holding balances represented in a smart contract on the root blockchain (e.g. Ethereum). The balances of the smart contract are represented and allocated to the balances of finalized blocks in the child Plasma blockchain. This allows one to hold the native coin in the child blockchain with full representation of balances on the root blockchain, allowing for withdrawals after a dispute mediation period.
+
+In order to achieve this, we construct a UTXO (Unspent Transaction Output) model for the ledger. While this is not an explicit requirement, it is easier to reason about with rapid withdrawals. The rationale for a UTXO model is that it is easy to compactly represent whether a particular state has been spent or not. This can be represented within a trie for merkleized proofs, and as a bitmap for a compact representation parsable by others. In other words, the smart contracts are held in accounts on the root chain, but ***the Plasma chain maintains a UTXO set of balances for the allocation of the balances held in the root chain account.*** For child chains which do not have significant requirements around state transitions, it is possible to use an account model for more complex or frequent state transitions, however there is more reliance on block space availability in the parent blockchain(s).
+
+***The blocks are propagated to the participants who wish to observe the blocks, including participants who hold balances or want to observe/enforce computing on the individual Plasma chain.*** While there is minimal complexity in maintaining deposits of off-chain state, state transitions and withdrawals create greater complexity.
+
+### 5.1 Fraud Proof
+
+All states within this child blockchain is enforced via fraud proofs which allows for any party to enforce invalid blocks, presuming block data availability.
+However, the greatest difficulty in this construction is that there are no explicit guarantees around data/block availability.
+
+The fraud proofs ensure that all state transitions are validated. Example fraud proofs are proof of transaction spendability (funds are available in the current UTXO), proof of state transition (including checking the signature for the ability an output can be spent, proof of inclusion/exclusion across blocks, and deposit/withdrawal proofs.)
+
+In order for this construction to have minimal proofs, though, all blocks must provide a commitment to a merkleized trie of the current state, a trie of outputs spent, a merkle tree of transactions, and a reference to the prior state being modified.
+
+The fraud proofs ensure that a coalition of participants are not able to create fraudulent blocks without getting penalized. ***In the event a fraudulent block is detected and proven on the root blockchain (or parent Plasma chains), the invalid block is rolled back.*** The result is highly-scalable state transitions are capable in the Plasma blockchain while ensuring that observers who have access to block data are able to prove (and therefore discourage) invalid state transition. In other words, ***payments can occur in this chain with only periodic commitments on the root chain.***
+
+### 5.2 Deposits
+
+Deposits from the root chain are sent directly into the master contract. The contract(s) are responsible for tracking current state commitments, penalization of invalid commitments using fraud proofs, and processing withdrawals. As the child Plasma blockchain is a full validator of the root blockchain, the incoming transaction must be processed using a two-phase lock-in. Deposits must include the destination chain blockhash to specify the destination child chain and is achieved using a multi-step process to ensure coins are not unrecoverable.
+
+1. The coins/tokens (e.g. ETH or ERC-20 token) are sent into the Plasma contract on the root blockchain. The coins are recoverable within some set time period for a challenge/response.
+2. ***The Plasma blockchain includes an incoming transaction proof.*** At this point, the Plasma blockchain is committing to the fact that the transaction is incoming and will be spendable in the event of either a lock-in transaction or spend initiated by the depositor. When this is included, the blockchain is committing to the fact that it will honor a withdrawal request. ***However, there is no confirmation yet that the depositor has sufficient information to generate a fraud proof, so there is not yet a commitment from the depositor.*** This block includes the addition in the state tree, bitmap, and transaction tree, so that there is a compact proof of correct inclusion.
+3. Depositor signs a transaction on the child Plasma blockchain, activating the transaction, which includes a commitment that they have seen the block with the chain's commitment in Phase 2. ***The role of this phase is the depositor is attesting to the fact that they have sufficient information to withdraw funds.***
+
+### 5.3 Mass Withdrawals and Bitmapped State
+
+The primary concern around this system is around the inability to verify state.
+
+***To be able to conduct maximum compaction of state transaction, outputs may be optionally represented in a bitmap. This is necessary for withdrawal proofs which may be too expensive to conduct on the root chain.***
+
+The goal of this construction allows for holding small balances on the Plasma chain. These balances are held in full reserve on the contract on the root blockchain, ***but the full ledger is not on the blockchain.*** The primary attack which needs to be mitigated is withheld invalid blocks (with commitments to the root chain). In the event the system observes invalid state transitions, the participants conduct a mass exit of the transactions.
+
+> compaction : 꽉 채움
+
+With a bitmap construction, a withdrawal includes a bitmap of signed transactions which wish to exit. A game/protocol is constructed which is enforced by a smart contract to ensure correct information. ***The bitmap ensures that everyone is able to reason about what outputs are being spent.*** As this is a bitmap, it necessitates that the state be represented in an unspent transaction output data structure (UTXO) for maximum efficacy of small-value balances. Spentness can be compactly proven, and a large set of state transitions can be cleanly enforced. After a predefined settlement time period, the bits can be reused.
+
+For those holding balances which can be enforced on the root chain, the requirement to conduct a UTXO bitmapped format is not necessary. However, for those holding balances and enforcement is only viable if the 1-2 bit transaction gas/fee on the root blockchain is sufficiently low.
+
+### 5.4 State Transactions
+
+By default, state transitions in the Plasma chain run in a similar multi-phase process as the deposit. ***However, unlike with the deposit construction, once a transaction is signed and included in a block, there is a commitment to participate.*** For this reason, state transitions should include a signature, state updates (e.g. destination, amount, token, and any other associated state data), as well as some kind of TTL for expiration and a commitment to a particular block. This TTL, while not required, should be below the time to construct exit proofs to ensure that adversarial exit conditions are known.
+
+The commitment to a block is a commitment by the spender that the entity broadcasting the transaction in the Plasma chain has observed the chain up to that point and is able to enforce proofs and must be after the block in which the output being spent has occurred.
+
+The multi-phase commitment occurs as follows for fast finalization:
+
+1. Alice wants to spend her output in the Plasma chain to Bob in the same Plasma chain (without the full transaction record being submitted on the blockchain). She creates a transaction which spends one of her outputs in the Plasma chain, signs it, and broadcasts the transaction.
+
+2. The transaction is included in a block by validator(s) of the Plasma chain. ***The header is included as part of a block in the parent Plasma chain or root blockchain, ultimately being committed and sealed in the root blockchain***
+3. Alice and Bob observes the transaction and signs an acknowledgement that he has seen the transaction and block. This acknowledgement gets signed and included in another Plasma block.(거래가 잘 진행 됐는지 acknowledgement로 확인)
+
+***For slow finalization, only the first step needs to occur. After the acknowledgement occurs, the transaction is considered finalized.***
+
+- The reason the third step exists is to ensure that block availability is ensured with the participants (Alice and Bob).
+
+***This third step is not required, but there will be significant delays in finality.*** The rationale is that a transaction should not be viewed as finalized until the block validity and information availability can be proven by all parties relevant to the transaction.
+
+If blocks are being withheld before finalization (between step 1 and 2) and Alice and/or Bob observes this, then Alice may withdraw her unfinalized funds. If blocks are being withheld after step 2 but before step 3, then it is presumed that Bob has sufficient information to withdraw funds, but since neither Alice nor Bob have fully committed to the payment, then it is not treated as complete, depending on information availability either party may theoretically be able to claim the funds. If both parties sign off on Step 3, then it is presumed that it is truly finalized.
+
+***Pay-to-contract-hash enforcement occurs after this step has been completed, specifically when the signatures are provably observed on-chain.*** In the event one party refuses to sign or blocks are being withheld, it is conditional upon a redemption proof. As all states are eventually committed to the chain via merkle proofs, there is less of a reliance on pay-to-contract-hash as payments are provable and enforcible after finalization.
+
+Note that Step 3 can be conditional upon a smart contract instead of a signature by both parties. This allows for mutli-chain or multi-transaction atomicity. Contract creation complexity may be increased, and writing higher level languages/tooling around this may be needed if these features are desired.
+
+> atomicity : 하나의 원자 트랜젝션은 모두 성공하거나 모두 실패해야 함. (e.g., 항공권의 날짜 선택 - 좌석 선택 - 지불)
+
+### 5.5 Periodic Commitments to the Root Chain
+
