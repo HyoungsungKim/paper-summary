@@ -39,6 +39,8 @@
 
 > **Block weight** prior to [SegWit](https://en.bitcoinwiki.org/wiki/SegWit), there was a max block size of 1MB. After SegWit, the concept of max block size was removed and replaced with *max block weight*. The cryptocurrent max block weight is 4MB.
 
+[How long does block validation take?](https://bitcoin.stackexchange.com/questions/50349/how-long-does-block-validation-take)
+
 ### Ethereum
 
 [How does Ethereum work, anyway?](https://medium.com/@preethikasireddy/how-does-ethereum-work-anyway-22d1df506369)
