@@ -287,3 +287,37 @@ Note that Step 3 can be conditional upon a smart contract instead of a signature
 
 ### 5.5 Periodic Commitments to the Root Chain
 
+The Plasma chain must be able to create ordering of the blockchain. ***In a Plasma chain, there is ordering within blocks, but the blocks are not attested to and ordered themselves on its own.*** As a result, it's necessary to create a commitment on the root blockchain. The Plasma chain publishes its block header on the root chain and its header is enforced by the fraud proofs.
+
+### 5.6 Withdrawals
+
+Plasma allows one to deposit funds of the native coin and tokens (i.e. ETH and ERC-20 tokens) off the root blockchain. It additionally allows for state transitions within the Plasma blockchain whose state is enforced by the root blockchain provided there is information availability. In the event of information availability failures, there is a need to do a mass exit on this Plasma chain. Finally, it's also possible to do a simple withdrawal of funds held in the Plasma chain.
+However, in normal operation, one can do a simple withdrawal.
+
+#### 5.6.1 Simple Withdrawal
+
+***For a simple withdrawal, one is only allowed to withdraw funds which have been committed in the root blockchain and ultimately finalized in the Plasma chain.***
+
+Withdrawals are the most critical component, as this ensures the fungibility(바꿀 수 있음) of coins between the root blockchain and the child Plasma chains. If one is able to deposit funds onto the Plasma chain, do state transitions (i.e. transfer coins to other parties), and those parties capable of withdrawing funds, then the value should closely map to the value of coins on the root chain. In some cases, funds on Plasma can be more useful, as it has greater transaction capacity, while the security is ultimately dependent upon the root chain.
+
+All participants of the Plasma chain MUST validate all parent Plasma chains and the root blockchain to ensure that there are no withdrawals in-progress for particular accounts/outputs when updating state. ***If a withdrawal is in progress, a subsequent block cannot spend*** the coins/tokens, any byzantine behavior here violates consensus and is subject to fraud proof, penalization, and block reversal per the Plasma contract in the root blockchain.
+
+A withdrawal occurs in the following steps:
+
+1. A signed withdrawal transaction is submitted to the root blockchain or parent Plasma chain. ***The amount being withdrawn must be whole outputs (no partial withdrawals). Multiple outputs may be withdrawn, but they must all be within the same Plasma chain.*** The output bitmap position is disclosed as part of the withdrawal. An additional bond is placed as part of the withdrawal to penalize false withdrawal requests.
+2. A predefined timeout period exists to allow for disputes. This is similar to the dispute period in Lightning Network. In this case, ***if anyone can prove an output has already been spent in the chain being withdrawn to (in many cases, the root blockchain), then the withdrawal is canceled and the bonded withdrawal request is lost.*** 
+3. A second time delay exists to wait for timeouts of any other withdrawal requests with a LOWER block confirmation height. This is to force ordered withdrawal in a particular Plasma chain or root chain.
+4. If the agreed dispute time period defined in the Plasma smart contract has elapsed and no fraud proofs are provided on the root or parent chain, then it is presumed that the withdrawal is correct and the withdrawer will be able to redeem their funds on the root/parent chain. Withdrawals are processed in the order of old to new in terms of the UTXO/account age.
+
+#### 5.6.2 Fast Withdrawal
+
+***A fast withdrawal is the same construction as the simple withdrawal, but the funds are being sent to a contract which operates an atomic swap.*** A fast withdrawal is not instant. However, it significantly reduces the time to withdrawal down to the time for transaction finality provided that the Plasma chain is not Byzantine (including conducting block withholding). For this reason, a ***fast withdrawal swap is not possible during block withholding attacks, and a slow mass withdrawal request would instead be necessary.***
+A fast withdrawal occurs in the following steps:
+
+1. Alice wants to withdraw funds to the root blockchain but doesn't want to wait. ***She's willing to pay the time-value for that convenience.*** Larry (the Liquidity Provider) is willing to provide this as a service. Alice and Larry coordinate to do a withdrawal to the root blockchain. The Plasma blockchain is presumed to be non-Byzantine.
+2. Funds are locked to a contract on a particular output in the Plasma chain. This occurs in a manner similar to a normal transfer, in that both parties broadcast a transaction, and then later commit that they have seen the transaction in a Plasma block. The terms of this contract is that if a contract is broadcast on the root blockchain and has been finalized, then the payment will go through in the Plasma chain. If no transaction proof can be provided, then Alice can redeem the funds.
+3. After the above Plasma block has finalized and Larry is confident he can redeem funds in the event the contract conditions are met, Larry creates an on-chain contract which enables payment to Alice for the specified amount (the amount he will receive less the fee he charges for this service)
+
+> Hash Time Lock Contract(HTLC) : 블록체인간 암호화폐를 교환 할 때 해시타임락을 이용한 거래 방식. 한쪽이 암호화폐를 전송했는데 일정 시간 안에 상대방이 코인을 전송하지 않으면 자동으로 거래가 취소 됨.
+
+### 5.7 Adversarial mass Withdrawal
