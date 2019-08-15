@@ -61,6 +61,28 @@ Notice that Peggy could prove to Victor that she knows the magic word, without r
 
 ### Definition
 
+A zero-knowledge proof must satisfy three properties: 
+
+1. **Completeness**: if the statement is true, the honest verifier (that is, one following the protocol properly) will be  convinced of this fact by an honest prover.
+2. **Soundness**: if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability.
+3. **Zero-knowledge**: if the statement is true, no verifier learns anything other than the fact that the statement is true.
+   - In other words, just knowing the statement (not the secret) is sufficient to imagine a scenario showing that the prover knows the secret.
+   - This is formalized by showing that every verifier has some *simulator* that, given only the statement to be proved (and no access to the prover), can produce a transcript that "looks like" an interaction between the honest prover and the verifier in question.
+
+***The third is what makes the proof zero-knowledge.***
+
+Zero-knowledge proofs are not proofs in the mathematical sense of the term because there is some small probability
+
+- the *soundness error*, that a cheating prover will be able to convince the verifier of a false statement.
+- In other words, ***zero-knowledge proofs are probabilistic "proofs"*** rather than deterministic proofs.
+  - However, there are techniques to decrease the soundness error to negligibly small values.
+
+### Applications
+
+### Blockchains
+
+It is proposed that ZKPs could be used to guarantee that transactions are valid despite the fact that information about the sender, the recipient and other transaction details remain hidden.
+
 
 
 ## From Blog post
