@@ -63,7 +63,7 @@ Notice that Peggy could prove to Victor that she knows the magic word, without r
 
 A zero-knowledge proof must satisfy three properties: 
 
-1. **Completeness**: if the statement is true, the honest verifier (that is, one following the protocol properly) will be  convinced of this fact by an honest prover.
+1. **Completeness**: if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
 2. **Soundness**: if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability.
 3. **Zero-knowledge**: if the statement is true, no verifier learns anything other than the fact that the statement is true.
    - In other words, just knowing the statement (not the secret) is sufficient to imagine a scenario showing that the prover knows the secret.
@@ -71,11 +71,19 @@ A zero-knowledge proof must satisfy three properties:
 
 ***The third is what makes the proof zero-knowledge.***
 
-Zero-knowledge proofs are not proofs in the mathematical sense of the term because there is some small probability
+Zero-knowledge proofs are not proofs in the mathematical sense of the term because ***there is some small probability***
+
+> soundness : 만약 statement가 false라면 prover는 verifier를 속일 수 없음
 
 - the *soundness error*, that a cheating prover will be able to convince the verifier of a false statement.
 - In other words, ***zero-knowledge proofs are probabilistic "proofs"*** rather than deterministic proofs.
   - However, there are techniques to decrease the soundness error to negligibly small values.
+
+>prover가 증명하려는 값을 직접 verifier에게 보낼수 없기 때문에 prover는 증명하고 싶은 값으로 리버싱이 안되는 값을 생성함. 이 값을 해시에 넣어서 verifier에게 리버싱이 가능한 정보 전달
+>
+>verifier는 prover가 보낸 값을 리버링 하고 이 값을 해시에 넣어 이 해시값으로 비교 함. 이 해쉬값이 같은지로 prover가 알고 있는지 모르고있는지 판단
+>
+>https://medium.com/decipher-media/zero-knowledge-proof-chapter-1-introduction-to-zero-knowledge-proof-zk-snarks-6475f5e9b17b
 
 ### Applications
 
