@@ -47,7 +47,7 @@
 
 > merkle tree : save data using hash
 >
-> patricia  : searching algorithim using trie
+> patricia  : searching algorithm using trie
 >
 > merkle patricia algorithm : save using hash(merkle) and searching value using patricia
 >
@@ -73,7 +73,7 @@
 
 ### Etc
 
-##### Cosmos & Polkadot
+#### Cosmos & Polkadot
 
 [5 Differences between Cosmos & Polkadot](https://medium.com/@juliankoh/5-differences-between-cosmos-polkadot-67f09535594b)
 
