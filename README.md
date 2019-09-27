@@ -73,6 +73,9 @@
 
 ### Etc
 
+### Consensus algorithm
+[ConsensusPedia: An Encyclopedia of 30+ Consensus Algorithms](https://hackernoon.com/consensuspedia-an-encyclopedia-of-29-consensus-algorithms-e9c4b4b7d08f)  
+
 #### Cosmos & Polkadot
 
 [5 Differences between Cosmos & Polkadot](https://medium.com/@juliankoh/5-differences-between-cosmos-polkadot-67f09535594b)
