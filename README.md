@@ -67,6 +67,8 @@
 
 [Ethereum wire protocol](https://github.com/ethereum/devp2p/blob/master/caps/eth.md)
 
+[Ethereum world state](https://medium.com/cybermiles/diving-into-ethereums-world-state-c893102030ed) - It is very impressive!  
+
 ### Stack exchange questions
 
 [Concept of Block weight and segwit are still unclear](https://bitcoin.stackexchange.com/questions/87970/concept-of-block-weight-and-segwit-are-still-unclear)
