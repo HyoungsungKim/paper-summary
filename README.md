@@ -65,6 +65,8 @@
 
 [Sharding, Casper → Serenity!](https://medium.com/onther-tech/sharding-casper-serenity-e25dec162845)
 
+[Ethereum wire protocol](https://github.com/ethereum/devp2p/blob/master/caps/eth.md)
+
 ### Stack exchange questions
 
 [Concept of Block weight and segwit are still unclear](https://bitcoin.stackexchange.com/questions/87970/concept-of-block-weight-and-segwit-are-still-unclear)
