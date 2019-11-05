@@ -65,3 +65,42 @@ But no matter! Bob (or any really any  other user, but let's assume Bob) has one
 
 #### A Note on “Punishments”
 
+To slash some of Alice's funds in the Plasma chain, we’d need to establish which funds are hers, which itself would require its own claim/dispute window mechanism, sending us down a recursive, challenges-all-the-way-down rabbit hole.
+
+***Thus, Plasma constructions typically  require Alice to post an "exit bond" as she attempts her withdrawal.*** In essence, she says, "I would like to take out 5 Ether, and here's 1 Ether which you can take from me if my exit proves to be fraudulent." We’re  free to set up the contractual terms — i.e., ***the required size of the  bond, as well as the response case of a violation*** (give the bond to the  successful challenger as bounty, slash it into oblivion, cover only the  challenger’s gas costs etc.) — and make them as lenient/Draconian as we please.
+
+#### The Miserable Case: Evil Operator
+
+What if the Operator is an out-and-out liar and a thief? 
+
+There's no objective way for us to determine which of them is lying. Thus, our Plasma threat-model has to include the possibility of the Operator suddenly, without warning, going completely silent.
+
+***We can't directly prevent the Operator’s exit from taking place, we instead allow everyone else to exit first.*** The smart contract enforces an exit queue which ensures that earlier UTXOs will be given priority;
+
+- Thus, as long as everyone using the Plasma chain withdraws what's rightfully theirs before the Operator’s massive withdrawal is complete, all of the Ether for the Operator to steal will be drained, and thus his mendacious(허위의) attempt to claim more than his share will ultimately be for naught.
+
+> 어떻게 operator가 거짓말 했는지 알지...?
+
+## Enter Plasma Cash!
+
+Plasma Cash is a variant on the Plasma construction which has become the foundation of much of the research in the Plasma community since.
+
+- It takes a  similar "minimum viable" approach as we saw in MVP, but begins with a  new restriction:
+  - ***All of the assets on a Plasma Cash chain are  non-fungible tokens.***
+  - Ethereum is fungible
+- ***Plasma Cash ditches(버리다) the Bitcoin-esque UTXO transaction model of MVP***
+  - Instead, each coin is accounted for in each Plasma block
+  - Presence of a coin indicates that the coin changed owners in that Plasma block (i.e., Alice sent it over to  Bob);
+  - Absence indicates that it still has the same owner as it did in the previous block.
+  - Thus, the full history of a coin can be described by its absence or presence in each Plasma block, from the current block all the way back to the block in which it was first deposited.
+
+In order for Bob to prove the *presence* of his coin in a given block, he only needs the transaction’s Merkle path.
+
+- However, to prove that the coin was *not* transferred in a given block, Bob requires the ability to prove *absence* of data, a feature not supported by the Merkle Trees we know and love.
+
+Thus, to enable this “proof of absence”  capability, Plasma Cash uses a souped-up Merkle Tree construct known as a Sparse Merkle Tree.
+
+- SMTs are Merkle trees with an additional, special feature:
+  - The leaves of the tree (the coins, in our  case) are each given a unique identification number which determines  where in the tree they reside.
+  - Each coin can only reside in its allotted "slot." What this means is that if a coin is absent, we know *where it would be if it were present,* and thus, we are able to prove its absence with a Merkle branch that shows that its slot is "empty" (i.e., equal to some null value — zero,  "undefined," whatever).
+
