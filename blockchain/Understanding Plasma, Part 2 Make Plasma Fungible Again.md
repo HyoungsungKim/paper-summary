@@ -28,3 +28,9 @@ The idea now is to add a requirement for *inclusion:* Not only do we require the
 
 ***Since both of these are required to prove inclusion, only one is required to prove exclusion;*** i.e., a coin is either included in a block or it isn't; there are no other possibilities, and the negation of “Both A and B (for inclusion)” is “Either A or B (for exclusion)”. 
 
+***The intervals between coin transfers now only require constant-sized data (just a number or two); so now  client-side data storage only increases with each coin transfer. This is a big deal***
+
+## Fungible Payments: Thinking in Ranges
+
+Previously, we spoke about treating each coin as a non-fungible token with a unique ID; To guarantee proper ownership of everyone's ether, the contract simply has to enforce that whenever a new "range" is created, it exists in an interval previously un-occupied by any other range. As long as this holds, we have a Plasma Cash model isomorphic to the old one.
+
