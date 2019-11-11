@@ -127,7 +127,7 @@ Each Plasma Cash block has a slot for every token in existence.
   - In addition to being able to show that a token was spent in a specific block
   - We can also show that the token *didn’t* change hands in that block.
 - So whereas Plasma MVP blocks form standard Merkle trees, Plasma Cash blocks form *sparse* Merkle trees.
-  - Standard Merkle trees don’t give us a good way to prove that something *isn’t* part of a specific block
+  - ***Standard Merkle trees don’t give us a good way to prove that something isn’t part of a specific block***
   - But sparse Merkle trees do
 - What’s cool about this is that users don’t actually need to keep track of every single token
 
@@ -139,6 +139,12 @@ Since users are only keeping track of their own tokens, they don’t know who ow
 - If the history is correct, then it should show the list of owners ending with the sender.
 - ***To prove that history is actually correct,*** the user needs to provide additional proof that each transaction in the history was correctly included in a block. 
 - Additionally, to show that there aren’t any missing transactions, ***the user also needs to provide a proof that the token wasn’t spent in any other block.***
+
+> 1. 마지막 거래자를 보여야 함
+> 2. 각 걱래가 올바르게 블록에 포함 되었는지 증명해야 함
+> 3. 토큰이 다른 블록에서 사용되지 않았는지 증명해야 함
+>
+> -> 증명해야 할 것들이 많음
 
 ### Withdrawals
 
@@ -181,7 +187,7 @@ Deposits in Plasma Debit are basically the same as deposits in Plasma Cash.
 
 - Unlike Plasma Cash, this token is also a payment channel with the consensus mechanism
   - 플라즈마 캐시에서는 채널이 없고 블록에 슬롯이 있음
-- It’s hard to have a payment channel with lots of  people simultaneously, ***so this really lends itself to single operators.***
+- It’s hard to have a payment channel with lots of people simultaneously, ***so this really lends itself to single operators.***
 
 ### Transactions
 
