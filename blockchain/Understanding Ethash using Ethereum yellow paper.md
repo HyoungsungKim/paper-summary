@@ -72,3 +72,25 @@ $$
 
 ### Cache
 
+- $$J_{cacherounds}$$ : Number of rounds in cache production. Value is 3
+
+The cache production process involves using the seed hash to first sequentially filling up $$c_{size}$$ bytes of
+memory, then performing $$J_{cacherounds}$$ passes of the RandMemoHash algorithm created by Lerner [2014]. The initial cache $$c`$$ , being an array of arrays of single bytes, will be constructed as follows.
+
+## Proof-of-work function
+
+Essentially, we maintain a “mix” $$J_{mixbytes}$$ bytes wide, and repeatedly sequentially fetch $$J_{mixbytes}$$ bytes from the full dataset and use the $$E_{FNV}$$ function to combine it with the mix.
+
+- $$J_{mixbytes}$$ bytes of sequential access are used so that each round of the algorithm always fetches a full page from RAM, minimizing translation lookaside buffer misses which ASICs would theoretically be able to avoid.
+
+If the output of this algorithm is below the desired target, then the nonce is valid.
+
+- Note that the extra application of KEC at the end ensures that there exists an intermediate nonce which can be provided to prove that at least a small amount of work was done;
+  - this quick outer PoW verification can be used for anti-DDoS purposes.
+  - It also serves to provide statistical assurance that the result is an unbiased, 256 bit number.
+
+https://github.com/ethereum/wiki/wiki/Ethash
+
+https://medium.com/tomak/%EC%9D%B4%EB%8D%94%EB%A6%AC%EC%9B%80-ethash-%EC%97%B0%EA%B5%AC-16677ed7da50
+
+캐시 사이즈 계산 -> 캐시 생성 ( [RandMemoHash](http://www.hashcash.org/papers/memohash.pdf) 사용) -> dataset 생성 -> hashmoto(mix 생성 할 때 데이터 셋에서 128byte읽어 옴 - 데이터 셋 사이즈는 30000블록마다 변함)
