@@ -2,6 +2,8 @@
 
 https://blog.ethereum.org/2015/11/15/merkling-in-ethereum/
 
+참고 : https://ihpark92.tistory.com/48
+
 First, the basics. A Merkle tree, in the most general sense, is a way of hashing a large number of “chunks” of data together which relies on splitting the chunks into buckets, where each bucket contains only a few chunks, then taking the hash of each bucket and repeating the same process, continuing to do so until the total number of hashes remaining  becomes only one: ***the root hash.***
 
 A user who wants to do a key-value lookup on the database (eg. “tell me the object in position 85273”) can ask for a Merkle proof, and upon receiving the proof verify that it is correct, and therefore that the value received *actually is* at position 85273 in the database with that particular root.
